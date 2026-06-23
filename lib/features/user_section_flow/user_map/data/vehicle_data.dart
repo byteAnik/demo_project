@@ -1,0 +1,67 @@
+const List<String> kCategories = [
+  "All",
+  "Car",
+  "Motorcycle",
+  "Rickshaw",
+  "CNG",
+  "Delivery",
+];
+
+const List<Map<String, dynamic>> kAllVehicles = [
+  {
+    "title": "Toyota Axio",
+    "driverName": "Anik Biswas",
+    "status": "Live",
+    "time": "2 mins ago",
+    "category": "Car",
+    "isCar": true,
+  },
+  {
+    "title": "Honda City",
+    "driverName": "Raju Ahmed",
+    "status": "Live",
+    "time": "5 mins ago",
+    "category": "Car",
+    "isCar": true,
+  },
+  {
+    "title": "Yamaha FZ-S",
+    "driverName": "Rakib Hasan",
+    "status": "Live",
+    "time": "1 min ago",
+    "category": "Motorcycle",
+    "isCar": false,
+  },
+  {
+    "title": "Bajaj Pulsar",
+    "driverName": "Sumon Islam",
+    "status": "Live",
+    "time": "3 mins ago",
+    "category": "Motorcycle",
+    "isCar": false,
+  },
+  {
+    "title": "Auto Rickshaw",
+    "driverName": "Karim Mia",
+    "status": "Live",
+    "time": "4 mins ago",
+    "category": "Rickshaw",
+    "isCar": false,
+  },
+  {
+    "title": "CNG Auto",
+    "driverName": "Rahim Uddin",
+    "status": "Live",
+    "time": "6 mins ago",
+    "category": "CNG",
+    "isCar": false,
+  },
+  {
+    "title": "Delivery Bike",
+    "driverName": "Shuvo Das",
+    "status": "Live",
+    "time": "2 mins ago",
+    "category": "Delivery",
+    "isCar": false,
+  },
+];
