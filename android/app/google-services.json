@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1048842721290",
+    "project_id": "fir-cb24c",
+    "storage_bucket": "fir-cb24c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048842721290:android:710154e5438bc260e7a7f3",
+        "android_client_info": {
+          "package_name": "com.yourcompany.gpstrackingsystem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB69TyLU7ZJSJ0pPVcjuo1gn0RzTAbMKl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

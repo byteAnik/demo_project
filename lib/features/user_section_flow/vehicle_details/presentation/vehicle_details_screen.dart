@@ -7,50 +7,61 @@ import 'package:gps_tracking_system_app/features/user_section_flow/vechile_on_ma
 import 'package:gps_tracking_system_app/helpers/ui_helpers.dart';
 
 class VehicleDetailsScreen extends StatelessWidget {
-  const VehicleDetailsScreen({super.key});
+  const VehicleDetailsScreen({super.key, required this.vehicle});
+
+  final Map<String, dynamic> vehicle;
+
+  String get _name => vehicle['name']?.toString() ?? 'Unknown Vehicle';
+  String get _type => vehicle['type']?.toString() ?? 'Car';
+  String get _driver => vehicle['driver']?.toString() ?? 'Unknown Driver';
+  String get _numberPlate => vehicle['numberPlate']?.toString() ?? 'N/A';
+  String get _lastUpdated => vehicle['lastUpdated']?.toString() ?? 'Live now';
+  String get _speed => vehicle['time']?.toString() ?? '0 km/h';
+  String get _status => vehicle['status']?.toString() ?? 'Online';
+  String get _image => vehicle['image']?.toString() ?? AssetsImages.carImage;
 
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> vehicleInfoList = [
       {
-        "icon": Icons.person_outline,
-        "title": "Driver",
-        "subtitle": "Anik Biswas",
-        "hasCallButton": true, // শুধুমাত্র ড্রাইভার লাইনে কল বাটন দেখানোর জন্য
+        'icon': Icons.person_outline,
+        'title': 'Driver',
+        'subtitle': _driver,
+        'hasCallButton': true,
       },
       {
-        "icon": Icons.directions_car_filled_outlined,
-        "title": "Vehicle Type",
-        "subtitle": "Car",
-        "hasCallButton": false,
+        'icon': Icons.directions_car_filled_outlined,
+        'title': 'Vehicle Type',
+        'subtitle': _type,
+        'hasCallButton': false,
       },
       {
-        "icon": Icons
-            .badge_outlined, // অথবা Icons.credit_card_outlined ব্যবহার করতে পারেন
-        "title": "Number Plate",
-        "subtitle": "Dhaka Metro-11-2233",
-        "hasCallButton": false,
+        'icon': Icons.badge_outlined,
+        'title': 'Number Plate',
+        'subtitle': _numberPlate,
+        'hasCallButton': false,
       },
       {
-        "icon": Icons.access_time,
-        "title": "Last Updated",
-        "subtitle": "2 mins ago",
-        "hasCallButton": false,
+        'icon': Icons.access_time,
+        'title': 'Last Updated',
+        'subtitle': _lastUpdated,
+        'hasCallButton': false,
       },
       {
-        "icon": Icons.speed_outlined,
-        "title": "Speed",
-        "subtitle": "45 km/h",
-        "hasCallButton": false,
+        'icon': Icons.speed_outlined,
+        'title': 'Speed',
+        'subtitle': _speed,
+        'hasCallButton': false,
       },
       {
-        "icon": Icons.gpp_good_outlined, // স্ট্যাটাসের জন্য শিল্ড/লক আইকন
-        "title": "Status",
-        "subtitle": "Online",
-        "hasCallButton": false,
-        "isStatus": true, // স্ট্যাটাসের টেক্সট সবুজ করার জন্য
+        'icon': Icons.gpp_good_outlined,
+        'title': 'Status',
+        'subtitle': _status,
+        'hasCallButton': false,
+        'isStatus': true,
       },
     ];
+
     return Scaffold(
       backgroundColor: AppColors.cFFFFFF,
       appBar: AppBar(
@@ -62,12 +73,10 @@ class VehicleDetailsScreen extends StatelessWidget {
             size: 16.sp,
             color: AppColors.c000000,
           ),
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: Get.back,
         ),
         title: Text(
-          "Vehicle Details",
+          'Vehicle Details',
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w700,
@@ -95,7 +104,6 @@ class VehicleDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   UIHelper.verticalSpace(24.h),
-
                   Container(
                     width: 120.w,
                     height: 120.w,
@@ -105,16 +113,21 @@ class VehicleDetailsScreen extends StatelessWidget {
                     ),
                     child: Center(
                       child: Image.asset(
-                        AssetsImages.carImage,
+                        _image,
                         width: 70.w,
                         fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.directions_car,
+                          size: 52.sp,
+                          color: const Color(0xFF495057),
+                        ),
                       ),
                     ),
                   ),
                   UIHelper.verticalSpace(16.h),
-
                   Text(
-                    "Toyota Axio",
+                    _name,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.w700,
@@ -122,37 +135,34 @@ class VehicleDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   UIHelper.verticalSpace(8.h),
-
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
                       vertical: 6.h,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(
-                        0xFFE6F4EA,
-                      ), // হালকা সবুজ ব্যাকগ্রাউন্ড
-                      borderRadius: BorderRadius.circular(20.r), // ওভাল শেপ
+                      color: const Color(0xFFE6F4EA),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: Text(
-                      "Live",
+                      _status,
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
-                        color: const Color(0xFF137333), // গাড় সবুজ টেক্সট কালার
+                        color: const Color(0xFF137333),
                       ),
                     ),
                   ),
-
                   UIHelper.verticalSpace(20.h),
                   ListView.separated(
                     itemCount: vehicleInfoList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) =>
-                        UIHelper.verticalSpace(16.h),
+                    separatorBuilder: (context, index) => UIHelper.verticalSpace(16.h),
                     itemBuilder: (context, index) {
                       final info = vehicleInfoList[index];
+                      final bool isStatus = info['isStatus'] == true;
+
                       return Row(
                         children: [
                           Container(
@@ -164,7 +174,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                             ),
                             child: Center(
                               child: Icon(
-                                info["icon"],
+                                info['icon'] as IconData,
                                 size: 20.sp,
                                 color: AppColors.c000000,
                               ),
@@ -176,7 +186,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  info["title"],
+                                  info['title'].toString(),
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
@@ -185,21 +195,19 @@ class VehicleDetailsScreen extends StatelessWidget {
                                 ),
                                 UIHelper.verticalSpace(4.h),
                                 Text(
-                                  info["subtitle"],
+                                  info['subtitle'].toString(),
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.c000000,
+                                    color: isStatus ? const Color(0xFF137333) : AppColors.c000000,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          if (info["hasCallButton"] == true)
+                          if (info['hasCallButton'] == true)
                             GestureDetector(
-                              onTap: () {
-                                // এখানে কলের লজিক থাকবে
-                              },
+                              onTap: () {},
                               child: Container(
                                 width: 40.w,
                                 height: 40.w,
@@ -223,7 +231,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                   UIHelper.verticalSpace(20.h),
                   ElevatedButton(
                     onPressed: () {
-                      Get.to(() => VechileOnMapScreen());
+                      Get.to(() => VechileOnMapScreen(vehicle: vehicle));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.c3B82F6,
@@ -234,7 +242,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                       elevation: 0,
                     ),
                     child: Text(
-                      "View on Map",
+                      'View on Map',
                       style: TextStyle(
                         fontFamily: 'Urbanist',
                         fontSize: 16.sp,
@@ -243,6 +251,7 @@ class VehicleDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  UIHelper.verticalSpace(24.h),
                 ],
               ),
             ),

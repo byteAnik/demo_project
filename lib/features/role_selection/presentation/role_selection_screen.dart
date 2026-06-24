@@ -4,7 +4,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:gps_tracking_system_app/constants/app_assets/assets_image.dart';
 import 'package:gps_tracking_system_app/constants/app_colors.dart';
-import 'package:gps_tracking_system_app/driver_navigation_bar_screen.dart';
 import 'package:gps_tracking_system_app/features/driver_section_flow/auth/login/presentation/login_screen.dart';
 import 'package:gps_tracking_system_app/helpers/ui_helpers.dart';
 import 'package:gps_tracking_system_app/navigation_bar.dart';

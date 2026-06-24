@@ -7,7 +7,7 @@ class VehicleItemWidget extends StatelessWidget {
   final String driverName;
   final String status;
   final String time;
-  final bool isCar;
+  final String category;
 
   const VehicleItemWidget({
     super.key,
@@ -15,11 +15,32 @@ class VehicleItemWidget extends StatelessWidget {
     required this.driverName,
     required this.status,
     required this.time,
-    required this.isCar,
+    required this.category,
   });
 
   @override
   Widget build(BuildContext context) {
+    IconData iconData;
+    Color iconColor;
+
+    switch (category.toLowerCase()) {
+      case 'motorcycle':
+      case 'bike':
+        iconData = Icons.motorcycle;
+        iconColor = AppColors.cEF4444;
+        break;
+      case 'cng':
+      case 'rickshaw':
+        iconData = Icons.electric_rickshaw;
+        iconColor = Colors.orange;
+        break;
+      case 'car':
+      default:
+        iconData = Icons.directions_car;
+        iconColor = AppColors.c3B82F6;
+        break;
+    }
+
     return Row(
       children: [
         Container(
@@ -38,25 +59,7 @@ class VehicleItemWidget extends StatelessWidget {
             ],
           ),
           child: Center(
-            child: isCar
-                ? Image.asset(
-                    'assets/images/car_icon.png',
-                    height: 24.h,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.directions_car,
-                      color: AppColors.c3B82F6,
-                      size: 24.sp,
-                    ),
-                  )
-                : Image.asset(
-                    'assets/images/bike_icon.png',
-                    height: 24.h,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.motorcycle,
-                      color: AppColors.cEF4444,
-                      size: 24.sp,
-                    ),
-                  ),
+            child: Icon(iconData, color: iconColor, size: 24.sp),
           ),
         ),
         SizedBox(width: 12.w),
@@ -66,22 +69,12 @@ class VehicleItemWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.c000000,
-                ),
+                style: TextStyle(fontFamily: 'Urbanist', fontSize: 15.sp, fontWeight: FontWeight.w700, color: AppColors.c000000),
               ),
               SizedBox(height: 2.h),
               Text(
                 "Driver: $driverName",
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  fontSize: 13.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.c6B6B6B,
-                ),
+                style: TextStyle(fontFamily: 'Urbanist', fontSize: 13.sp, fontWeight: FontWeight.w500, color: AppColors.c6B6B6B),
               ),
             ],
           ),
@@ -92,28 +85,18 @@ class VehicleItemWidget extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
               decoration: BoxDecoration(
-                color: const Color(0xFFE8F5E9), // Light green background
+                color: const Color(0xFFE8F5E9),
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: Text(
                 status,
-                style: TextStyle(
-                  fontFamily: 'Urbanist',
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF2E7D32), // Dark green text
-                ),
+                style: TextStyle(fontFamily: 'Urbanist', fontSize: 11.sp, fontWeight: FontWeight.w600, color: const Color(0xFF2E7D32)),
               ),
             ),
             SizedBox(height: 6.h),
             Text(
               time,
-              style: TextStyle(
-                fontFamily: 'Urbanist',
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.c6B6B6B,
-              ),
+              style: TextStyle(fontFamily: 'Urbanist', fontSize: 11.sp, fontWeight: FontWeight.w500, color: AppColors.c6B6B6B),
             ),
           ],
         ),

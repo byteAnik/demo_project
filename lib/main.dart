@@ -1,10 +1,12 @@
 import 'package:auto_animated/auto_animated.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gps_tracking_system_app/constants/app_colors.dart';
 import 'package:gps_tracking_system_app/constants/custome_theme.dart';
+import 'package:gps_tracking_system_app/firebase_options.dart';
 import 'package:gps_tracking_system_app/features/role_selection/presentation/role_selection_screen.dart';
 import 'package:gps_tracking_system_app/helpers/di.dart';
 import 'package:gps_tracking_system_app/helpers/helper_methods.dart';
@@ -13,8 +15,13 @@ import 'package:gps_tracking_system_app/helpers/register_provider.dart';
 import 'package:gps_tracking_system_app/networks/dio/dio.dart';
 import 'package:provider/provider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: kIsWeb ? DefaultFirebaseOptions.web : null,
+  );
 
   await GetStorage.init();
   diSetup();
