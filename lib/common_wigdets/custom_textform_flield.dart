@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CommonTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
-  final IconData prefixIcon;
+
   final TextInputType keyboardType;
   final int maxLines;
   final TextEditingController? controller;
@@ -17,7 +17,7 @@ class CommonTextField extends StatelessWidget {
     super.key,
     required this.labelText,
     required this.hintText,
-    required this.prefixIcon,
+
     this.keyboardType = TextInputType.text,
     this.maxLines = 1,
     this.controller,
@@ -63,11 +63,7 @@ class CommonTextField extends StatelessWidget {
                 color: const Color(0xFF94A3B8),
                 fontSize: 14.sp,
               ),
-              prefixIcon: Icon(
-                prefixIcon,
-                color: const Color(0xFF10B981),
-                size: 20.sp,
-              ),
+              
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 16.w,

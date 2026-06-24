@@ -12,7 +12,7 @@ class AssetsIcons {
   static String questionMarkIcon = 'assets/icons/question_mark_icon.png';
 
   static String dark = 'assets/icons/dark.png';
-  static String homeIcon = 'assets/icons/home_icon.png';
+
   static String statisticIcon = 'assets/icons/statistic_icon.png';
   static String congnitiveIcon = 'assets/icons/cognitive_icon.png';
   static String chartIcon = 'assets/icons/chart_icon.png';
@@ -20,4 +20,6 @@ class AssetsIcons {
   static String mapIcon = 'assets/icons/map_icon.png';
   static String carIcon = 'assets/icons/car_icon.png';
   static String personIcon = 'assets/icons/person_icon.png';
+  static String homeIcon = 'assets/icons/home_icon.png';
+  static String historyIcon = 'assets/icons/history_icon.png';
 }

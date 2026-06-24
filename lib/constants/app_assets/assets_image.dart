@@ -14,4 +14,5 @@ class AssetsImages {
   static String vechileMapImage = 'assets/images/vechile_map_image.png';
   static String bike = 'assets/images/bike.png';
   static String anik = 'assets/images/anik.png';
+  static String loginImage = 'assets/images/login_image.png';
 }
