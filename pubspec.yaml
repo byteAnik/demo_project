@@ -103,6 +103,7 @@ dependencies:
   latlong2: ^0.9.1
   firebase_database: ^12.4.4
   cloud_firestore: ^6.6.0
+  firebase_auth: ^6.5.4
 
 dev_dependencies:
   flutter_test:

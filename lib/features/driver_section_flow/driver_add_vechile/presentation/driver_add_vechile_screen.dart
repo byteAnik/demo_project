@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:gps_tracking_system_app/common_wigdets/custom_textform_flield.dart';
 import 'package:gps_tracking_system_app/constants/app_colors.dart';
 import 'package:gps_tracking_system_app/helpers/ui_helpers.dart';
+import 'package:intl/intl.dart';
 
 class DriverAddVechileScreen extends StatefulWidget {
   const DriverAddVechileScreen({super.key});
@@ -12,6 +16,10 @@ class DriverAddVechileScreen extends StatefulWidget {
 }
 
 class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
+  final _vehicleNameController = TextEditingController();
+  final _numberPlateController = TextEditingController();
+  bool _isSaving = false;
+
   // সিলেক্টেড ভেহিকেল টাইপ ট্র্যাক করার জন্য ভেরিয়েবল
   int _selectedVehicleIndex = 0;
 
@@ -44,6 +52,87 @@ class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
       "color": const Color(0xFF7F8C8D),
     },
   ];
+
+  @override
+  void dispose() {
+    _vehicleNameController.dispose();
+    _numberPlateController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveVehicle() async {
+    final vehicleName = _vehicleNameController.text.trim();
+    final numberPlate = _numberPlateController.text.trim();
+
+    if (vehicleName.isEmpty || numberPlate.isEmpty) {
+      _showMessage('Add Vehicle', 'Please fill up all vehicle fields.');
+      return;
+    }
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      _showMessage('Add Vehicle', 'Driver not logged in.');
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    try {
+      final selectedVehicle = _vehicleTypes[_selectedVehicleIndex];
+      final driverName =
+          user.displayName ??
+          user.email?.split('@').first.trim() ??
+          'Unknown Driver';
+
+      await FirebaseFirestore.instance
+          .collection('active_vehicles')
+          .doc(user.uid)
+          .set({
+            'driverId': user.uid,
+            'driverName': driverName,
+            'driverPhone': user.phoneNumber ?? '',
+            'vehicleName': vehicleName,
+            'vehicleType': selectedVehicle['name'],
+            'numberPlate': numberPlate,
+            'registeredOn': DateFormat('dd MMM yyyy').format(DateTime.now()),
+            'isTracking': false,
+            'speed': '0 km/h',
+            'latitude': 23.7772,
+            'longitude': 90.4009,
+            'lastUpdated': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
+
+      if (!mounted) return;
+
+      _vehicleNameController.clear();
+      _numberPlateController.clear();
+      _showMessage('Success', 'Vehicle added successfully.');
+      Navigator.pop(context);
+    } catch (error) {
+      _showMessage('Add Vehicle', 'Failed to save vehicle. Please try again.');
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
+  }
+
+  void _showMessage(String title, String message) {
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(16),
+      duration: const Duration(seconds: 3),
+    );
+  }
+
+  String? _requiredFieldValidator(String? value) {
+    if ((value ?? '').trim().isEmpty) {
+      return 'This field is required';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +183,8 @@ class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
                 CommonTextField(
                   labelText: 'Vehicle Name',
                   hintText: 'e.g. Toyota Axio',
+                  controller: _vehicleNameController,
+                  validator: _requiredFieldValidator,
                 ),
                 UIHelper.verticalSpace(20.h),
 
@@ -101,6 +192,8 @@ class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
                 CommonTextField(
                   labelText: 'Number Plate',
                   hintText: 'e.g. Dhaka Metro-11-2233',
+                  controller: _numberPlateController,
+                  validator: _requiredFieldValidator,
                 ),
                 UIHelper.verticalSpace(20.h),
 
@@ -235,9 +328,7 @@ class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
                   width: double.infinity,
                   height: 48.h,
                   child: ElevatedButton(
-                    onPressed: () {
-                      // সেভ অ্যাকশন
-                    },
+                    onPressed: _isSaving ? null : _saveVehicle,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(
                         0xFF27AE60,
@@ -247,14 +338,23 @@ class _DriverAddVechileScreenState extends State<DriverAddVechileScreen> {
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                     ),
-                    child: Text(
-                      "Save Vehicle",
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: _isSaving
+                        ? SizedBox(
+                            height: 20.r,
+                            width: 20.r,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text(
+                            "Save Vehicle",
+                            style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
                 UIHelper.verticalSpace(24.h),
