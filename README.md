@@ -49,3 +49,33 @@ A real-time GPS tracking application built with Flutter and Firebase, featuring 
    ```bash
    git clone [https://github.com/byteAnik/demo_project.git)
    cd your-repo-name
+
+---
+
+## 🎨 Interface & Feature Explanations
+
+### 1. User Interface (UI)
+- **Live Tracking View:** Users can see the registered vehicle moving smoothly on a full-screen map interface.
+- **Status Panel:** Displays active speeds, signal accuracy, and whether the driver is online.
+
+### 2. Driver Interface
+- **Driver Dashboard (`DriverHomeScreen`):** Shows driver profile info, current active vehicle card, and rapid actions.
+- **Vehicle Profile (`DriverMyVehicleScreen`):** Fetches registered vehicle details (Type, Number Plate, Sync date) in real-time.
+- **Vehicle Controller (`DriverAddVehicleScreen`):** A smooth form with grid/dropdown selection to register new vehicle metrics directly to Firestore.
+
+### 3. How Vehicles are Connected with Drivers
+- Vehicles are mapped using a **1:1 relationship via the Driver's Unique User ID (`uid`)** from Firebase Authentication.
+- When a driver registers a vehicle, it writes a document inside the `active_vehicles` collection where the **Document ID == Driver UID**. 
+- This guarantees efficient querying and absolute unique binding.
+
+### 4. How Live or Simulated Tracking Works
+- **State Management:** When the Driver clicks **Start Tracking**, a background simulation timer triggers inside the `DriverHomeController`.
+- **Realtime Broadcast:** The controller continuously updates the driver's mock/live latitude, longitude, and speed parameters into Cloud Firestore.
+- **Stream Consuming:** On the `LiveTrackingScreen` (both user and driver ends), a `StreamBuilder` listens to that exact document snapshot. As coordinates change, `MapController.move()` smoothly translates the marker across OpenStreetMap.
+
+---
+
+## ⚠️ Prototype Limitations
+- **Mock Simulation:** Currently uses simulated lat/lng offsets instead of a continuous background native device GPS sensor stream.
+- **No Polyline Routing:** Shows real-time spot markers but does not render underlying routing paths/directions between historical checkpoints yet.
+- **Local Authentication Persistence:** Basic implementation; production tokens require structured rotation logic.
